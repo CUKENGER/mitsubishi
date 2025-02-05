@@ -4,6 +4,7 @@ import { QNodesService } from '@api/services/q/q-nodes.service';
 import { QNodeService } from '@api/services/q/q-node.service';
 import { QCreatorService } from '@api/services/q-creator.service';
 import { iQService, tResult } from '@api/api-types';
+import { VinService } from './vin.service';
 
 @Injectable()
 export class QService {
@@ -12,6 +13,7 @@ export class QService {
     private readonly qGroupsService: QGroupsService,
     private readonly qNodesService: QNodesService,
     private readonly qNodeService: QNodeService,
+    private readonly vinService: VinService,
   ) {}
 
   async run(q: string): Promise<tResult> {
@@ -29,6 +31,9 @@ export class QService {
         break;
       case 'getMainGroup':
         model = this.qGroupsService;
+        break;
+      case 'getVehicleId':
+        model = this.vinService;
         break;
       default:
         throw new BadRequestException('Не определена модель');

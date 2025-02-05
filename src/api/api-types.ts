@@ -3,7 +3,8 @@ type tTypeMethod =
   | 'getMainGroup'
   | 'getNodes'
   | 'getNode'
-  | 'getImage';
+  | 'getImage'
+  | 'getVehicleId';
 
 export type tQData = {
   method: tTypeMethod;
@@ -27,7 +28,8 @@ type tTableItem = {
 };
 export type tTable = {
   header: tTableHeader[];
-  data: tTableItem[];
+  // data: tTableItem[];
+  data: Array<{ code: string; name: string }>;
   flag_hide_header?: boolean;
   title?: string;
   q?: string;
@@ -35,7 +37,7 @@ export type tTable = {
 
 export type tAttributesMain = {
   label: string;
-  value: string;
+  value: string | number;
   id: string;
 };
 export type tVehicle = {

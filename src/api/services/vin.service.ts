@@ -17,12 +17,12 @@ export class VinService {
   async run(vin: string) {
     const url = `/vehicle-data/${vin}`;
     const response = await this.axiosService.get(
-      // this.baseApiService.urlCatalog(url),
-      `http://mmcasa-dev.apcloud.local/api/asa/ru${url}`,
+      this.baseApiService.urlCatalog(url),
       { flagException: false },
     );
 
     const responseVehicle = response?.data ?? null;
+    console.log(`responseVehicle`, responseVehicle);
     if (responseVehicle === null) {
       return {
         resultCode: this.baseApiService.RESULT_CODE_VIN_NOT_FOUND,
@@ -45,7 +45,7 @@ export class VinService {
       resultCode: this.baseApiService.RESULT_CODE_OK,
       success: true,
       lang: this.coreService.lang(),
-      result: { ...vehicle },
+      result: { vehicle },
     };
   }
 }

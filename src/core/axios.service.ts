@@ -87,7 +87,6 @@ export class AxiosService {
           }
         })) as AxiosResponse;
     }
-    console.log('response axios', response)
     return response;
   }
 

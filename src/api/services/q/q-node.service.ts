@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { iQService, tNode } from '@api/api-types';
+import { iQService, tNode, tQData } from '@api/api-types';
 import { AxiosService } from '@core/axios.service';
 import { BaseApiService } from '../base-api.service';
 import { QCreatorService } from '../q-creator.service';
 import { CoreService } from '@core/core.service';
+
 @Injectable()
 export class QNodeService implements iQService {
   constructor(
@@ -13,11 +14,11 @@ export class QNodeService implements iQService {
     private readonly coreService: CoreService,
   ) {}
 
-  async run(qData: any) {
-    const url = `/node/${qData.vehicleId}/${qData.data.nodeId}`;
+  async run(qData: tQData) {
+    const url = `/${qData.vin}/search-catalog`
     const response = await this.axiosService.get(
       this.baseApiService.urlCatalog(url),
-      { flagException: false },
+      { flagException: false, params: {query: qData.data.nodeTitle} },
     );
 
     const nodeData = response?.data ?? null;
@@ -31,12 +32,12 @@ export class QNodeService implements iQService {
     }
 
     const node: tNode = {
-      ...nodeData,
+      ...nodeData.subgroups[0],
       qGroup: this.qCreatorService.createQ({
         method: 'getNodes',
         vin: qData.vin,
         vehicleId: qData.vehicleId,
-        data: { groupId: nodeData.groupId },
+        data: { groupId: nodeData.subgroups[0].code },
       }),
     };
 

@@ -18,21 +18,22 @@ export class QGroupsService implements iQService {
   }
 
   async run(qData: tQData) {
-    const url = `/main-groups/${qData.vehicleId}`;
+    const url = `/${qData.vin}/main-groups`;
     const response = await this.axiosService.get(
       this.baseApiService.urlCatalog(url),
       { flagException: false },
     );
 
-    const groups = response?.data ?? [];
+    const groups = response?.data.main_groups ?? [];
+    console.log('groups', groups)
     const lists: tListItem[] = groups.map((group) => ({
-      title: group.title,
+      title: group.name,
       code: group.code,
       q: this.qCreatorService.createQ({
         method: 'getNodes',
         vin: qData.vin,
         vehicleId: qData.vehicleId,
-        data: { groupId: group.id },
+        data: { groupId: group.code },
       }),
     }));
 
